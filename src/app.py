@@ -7,6 +7,7 @@ import os
 import sys
 import streamlit as st
 import time
+from db import log_ticket
 
 # Fix imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -124,6 +125,18 @@ if st.button("🚀 Process Ticket", type="primary", use_container_width=True):
             elapsed = time.time() - start_time
 
         # Update stats
+         # Log to PostgreSQL for Grafana
+        log_ticket(
+            ticket_text=ticket_text,
+            queue=result["queue"],
+            queue_confidence=result["queue_confidence"],
+            priority=result["priority"],
+            priority_confidence=result["priority_confidence"],
+            escalated=result["escalated"],
+            response_time_ms=int(elapsed * 1000),
+            num_articles=len(result["retrieved_articles"]),
+            draft_reply=result["draft_reply"],
+        )
         if result["escalated"]:
             st.session_state.escalated_count += 1
         else:
