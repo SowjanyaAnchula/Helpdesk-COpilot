@@ -9,3 +9,4 @@ chroma_db/
 models/
 checkpoints/
 Pipfile.lock
+.DS_Store
