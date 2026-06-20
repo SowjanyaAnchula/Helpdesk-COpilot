@@ -1,0 +1,96 @@
+{
+    "annotations": { "list": [] },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "panels": [
+      {
+        "datasource": { "type": "postgres", "uid": "" },
+        "fieldConfig": {
+          "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }] } },
+          "overrides": []
+        },
+        "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+        "id": 1,
+        "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "auto" },
+        "title": "Total Tickets",
+        "type": "stat",
+        "targets": [{ "rawSql": "SELECT COUNT(*) FROM ticket_logs;", "format": "table" }]
+      },
+      {
+        "datasource": { "type": "postgres", "uid": "" },
+        "fieldConfig": {
+          "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 50 }] } },
+          "overrides": []
+        },
+        "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+        "id": 2,
+        "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "auto" },
+        "title": "Escalation Rate %",
+        "type": "stat",
+        "targets": [{ "rawSql": "SELECT ROUND(100.0 * SUM(CASE WHEN escalated THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 1) FROM ticket_logs;", "format": "table" }]
+      },
+      {
+        "datasource": { "type": "postgres", "uid": "" },
+        "fieldConfig": {
+          "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }] }, "unit": "ms" },
+          "overrides": []
+        },
+        "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+        "id": 3,
+        "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "auto" },
+        "title": "Avg Response Time",
+        "type": "stat",
+        "targets": [{ "rawSql": "SELECT ROUND(AVG(response_time_ms)) FROM ticket_logs;", "format": "table" }]
+      },
+      {
+        "datasource": { "type": "postgres", "uid": "" },
+        "fieldConfig": {
+          "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }] } },
+          "overrides": []
+        },
+        "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+        "id": 4,
+        "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "auto" },
+        "title": "Avg Confidence",
+        "type": "stat",
+        "targets": [{ "rawSql": "SELECT ROUND(AVG(queue_confidence)::numeric, 2) FROM ticket_logs;", "format": "table" }]
+      },
+      {
+        "datasource": { "type": "postgres", "uid": "" },
+        "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" } }, "overrides": [] },
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+        "id": 5,
+        "options": { "legend": { "displayMode": "list" }, "tooltip": { "mode": "single" } },
+        "title": "Tickets by Queue",
+        "type": "piechart",
+        "targets": [{ "rawSql": "SELECT queue, COUNT(*) as count FROM ticket_logs GROUP BY queue ORDER BY count DESC;", "format": "table" }]
+      },
+      {
+        "datasource": { "type": "postgres", "uid": "" },
+        "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" } }, "overrides": [] },
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+        "id": 6,
+        "title": "Tickets Over Time",
+        "type": "timeseries",
+        "targets": [{ "rawSql": "SELECT date_trunc('hour', created_at) as time, COUNT(*) as tickets FROM ticket_logs GROUP BY time ORDER BY time;", "format": "time_series" }]
+      },
+      {
+        "datasource": { "type": "postgres", "uid": "" },
+        "fieldConfig": { "defaults": {}, "overrides": [] },
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 12 },
+        "id": 7,
+        "title": "Recent Tickets",
+        "type": "table",
+        "targets": [{ "rawSql": "SELECT created_at, LEFT(ticket_text, 80) as ticket, queue, queue_confidence, priority, escalated, response_time_ms FROM ticket_logs ORDER BY created_at DESC LIMIT 20;", "format": "table" }]
+      }
+    ],
+    "schemaVersion": 39,
+    "tags": ["helpdesk"],
+    "templating": { "list": [] },
+    "time": { "from": "now-24h", "to": "now" },
+    "title": "HelpDesk Copilot Monitor",
+    "uid": "helpdesk-monitor"
+  }

@@ -1,0 +1,35 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+openai = "*"
+jupyter = "*"
+pandas = "*"
+ipykernel = "*"
+chromadb = "*"
+sentence-transformers = "*"
+scikit-learn = "*"
+nltk = "*"
+setfit = "==1.0.3"
+transformers = "==4.40.0"
+huggingface-hub = "==0.23.4"
+datasets = "==2.19.0"
+rank-bm25 = "*"
+langgraph = "*"
+langchain = "*"
+langchain-openai = "*"
+langchain-core = "*"
+python-dotenv = "*"
+streamlit = "*"
+flask = "*"
+psycopg2-binary = "*"
+
+[dev-packages]
+tqdm = "*"
+notebook = "==7.1.2"
+ipywidgets = "*"
+
+[requires]
+python_version = "3.12"

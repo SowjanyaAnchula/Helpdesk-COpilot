@@ -1,0 +1,11 @@
+.env
+.envrc
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+data/
+chroma_db/
+models/
+checkpoints/
+Pipfile.lock
