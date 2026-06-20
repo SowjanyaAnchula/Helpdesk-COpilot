@@ -1,6 +1,7 @@
 """
 app.py — HelpDesk Copilot
 Streamlit dashboard for the support ticket triage agent.
+Streamlit dashboard.
 """
 
 import os
